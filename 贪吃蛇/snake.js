@@ -55,8 +55,21 @@ Snake.prototype.show = function() {
     ellipse(this.head.x * w + w / 2, this.head.y * w + w / 2, w/2)
 }
 
-Snake.prototype.update = function() {
+Snake.prototype.dead = function() {
     if (this.head.x < 0 || this.head.x >= cellNumX || this.head.y < 0 || this.head.y >= cellNumY) {
+        return true
+    } else {
+        for (var i = 1; i < this.body.length; i++) {
+            if (this.body[i].x == this.head.x && this.body[i].y == this.head.y) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+Snake.prototype.update = function() {
+    if (this.dead()) {
         this.death()
     } else {
         switch (this.direction) {
