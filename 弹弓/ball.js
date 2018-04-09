@@ -28,8 +28,6 @@ Ball.prototype.contains = function(x, y) {
     return false
 }
 
-
-
 Ball.prototype.update = function() {
     if (this.dragged) {
         this.drag(mouseX, mouseY)
@@ -65,7 +63,7 @@ Ball.prototype.Move = function() {
         this.yBounceJudge(this.radius)
         let goundTouch=this.yBounceJudge(height - 1 - this.radius)
         if (goundTouch){
-            if (abs(this.speed.y) <= g * dt / 2) {//当速度太小时，强制为0
+            if (abs(this.speed.y) <= g * dt) {//当速度太小时，强制为0
                 this.g = 0
                 this.y = height - 1 - this.radius
                 this.speed.y = 0
@@ -123,7 +121,8 @@ Ball.prototype.xBounceJudge = function(objectX) {
 Ball.prototype.yBounceJudge = function(objectY) {
     //let dir = this.speed.y / abs(this.speed.y)
     let target = (this.y - objectY) / (this.speed.y * dt)
-    if (target >= 0 && target < 1) {
+    log((this.y - objectY),(this.speed.y * dt))
+    if (target >= 0 && target <= 1) {
         this.speed.y = - this.speed.y * bounceDecay
         this. y = (1 + bounceDecay) * objectY - this. y * bounceDecay
         return true
