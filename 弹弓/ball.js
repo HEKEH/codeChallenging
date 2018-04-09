@@ -60,12 +60,12 @@ Ball.prototype.Move = function() {
             }
         }
 
-        this.RightBounceJudge(0)
-        this.LeftBounceJudge(width - 1)
-        this.DownBounceJudge(0)
-        let goundTouch=this.UpBounceJudge(height - 1)
+        this.xBounceJudge(this.radius)
+        this.xBounceJudge(width - 1 - this.radius)
+        this.yBounceJudge(this.radius)
+        let goundTouch=this.yBounceJudge(height - 1 - this.radius)
         if (goundTouch){
-            if (abs(this.speed.y) <= g * dt / 2) {
+            if (abs(this.speed.y) <= g * dt / 2) {//当速度太小时，强制为0
                 this.g = 0
                 this.y = height - 1 - this.radius
                 this.speed.y = 0
@@ -80,7 +80,7 @@ Ball.prototype.Move = function() {
 
 
 Ball.prototype.reachOrigin = function() {
-    if (distance([this.x, this.y],[Origin.x, Origin.y]) < Math.sqrt((Math.pow(this.speed.x * dt,2) + Math.pow(this.speed.y * dt,2)))) {
+    if (distance([this.x, this.y],[Origin.x, Origin.y]) <=  0.5 * Math.sqrt((Math.pow(this.speed.x * dt,2) + Math.pow(this.speed.y * dt,2)))) {
         return true
     }
     else {
@@ -111,58 +111,50 @@ Ball.prototype.drag = function(x, y) {
     }
 }
 
-Ball.prototype.RightBounceJudge = function(x) {
-    if (this.x - this.radius < x ) {
-        this.x = x + this.radius
-        this.speed.x = abs(this.speed.x) * 0.9
+Ball.prototype.xBounceJudge = function(objectX) {
+    //let dir = this.speed.x / abs(this.speed.x)
+    let target = (this.x - objectX) / (this.speed.x * dt)
+    if (target >= 0 && target < 1) {
+        this.speed.x = - this.speed.x * bounceDecay
+        this. x = (1 + bounceDecay) * objectX - this. x * bounceDecay
     }
 }
 
-Ball.prototype.LeftBounceJudge = function(x) {
-    if (this.x + this.radius > x ) {
-        this.x = x - this.radius
-        this.speed.x = -abs(this.speed.x) * 0.9
-    }
-}
-
-Ball.prototype.DownBounceJudge = function(y) {
-    if (this.y - this.radius < y ) {
-        this.y = y + this.radius
-        this.speed.y = abs(this.speed.y) *0.9
-    }
-}
-
-Ball.prototype.UpBounceJudge = function(y) {
-    if (this.y + this.radius > y) {
-        //this.y = y - this.radius
-        this.speed.y = - abs(this.speed.y) * 0.9
+Ball.prototype.yBounceJudge = function(objectY) {
+    //let dir = this.speed.y / abs(this.speed.y)
+    let target = (this.y - objectY) / (this.speed.y * dt)
+    if (target >= 0 && target < 1) {
+        this.speed.y = - this.speed.y * bounceDecay
+        this. y = (1 + bounceDecay) * objectY - this. y * bounceDecay
         return true
     }
 }
 
-
-
-// Ball.prototype.XbounceJudge = function(barrierPositionX) {
-//     //this.speed.x = - this.speed.x
-//     if (barrierPositionX > 0 && barrierPositionX < this.radius + abs(this.speed.x) * dt) { // 防止bug
-//         this.speed.x = - abs(this.speed.x) * 0.8
-//     } else if (barrierPositionX < 0 && barrierPositionX > - this.radius - abs(this.speed.x) * dt){
-//         this.speed.x = abs(this.speed.x) * 0.8
+// Ball.prototype.RightBounceJudge = function(x) {
+//     if (this.x - this.radius < x ) {
+//         this.x = x + this.radius
+//         this.speed.x = abs(this.speed.x) * bounceDecay
 //     }
 // }
 //
-// Ball.prototype.YbounceJudge = function(barrierPositionY) {
-//     if (barrierPositionY > 0 && barrierPositionY < this.radius + abs(this.speed.y) * dt) { // 防止bug
-//         if (abs(this.speed.y) < 0.1) {
-//             this.g = 0
-//             this.y = height -1 -this.radius
-//             this.speed.y = 0
-//             this.a.y = 0
-//         } else{
-//             this.speed.y = - abs(this.speed.y) * 0.8
-//             log(this.speed.y)
-//         }
-//     } else if (barrierPositionY < 0 && barrierPositionY > - this.radius - abs(this.speed.y) * dt) {
-//         this.speed.y = abs(this.speed.y) * 0.8
+// Ball.prototype.LeftBounceJudge = function(x) {
+//     if (this.x + this.radius > x ) {
+//         this.x = x - this.radius
+//         this.speed.x = -abs(this.speed.x) * bounceDecay
+//     }
+// }
+//
+// Ball.prototype.DownBounceJudge = function(y) {
+//     if (this.y - this.radius < y ) {
+//         this.y = y + this.radius
+//         this.speed.y = abs(this.speed.y) * bounceDecay
+//     }
+// }
+//
+// Ball.prototype.UpBounceJudge = function(y) {
+//     if (this.y + this.radius > y) {
+//         //this.y = y - this.radius
+//         this.speed.y = - abs(this.speed.y) * bounceDecay
+//         return true
 //     }
 // }

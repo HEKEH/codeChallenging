@@ -5,7 +5,8 @@ let elasticCord
 let dt //时间间隔
 let g  //重力加速度
 let k //弹性系数
-let mu
+let mu // 摩阻力
+let bounceDecay //碰撞衰减
 
 let OriginDragEnabled = false
 
@@ -19,6 +20,7 @@ function setup() {
     k = 0.003
     g = 0.2
     mu = 0.4
+    bounceDecay = 0.9
 
     ball = new Ball()
     elasticCord = new ElasticCord()//橡皮筋
