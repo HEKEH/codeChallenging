@@ -31,16 +31,17 @@ function drawGrid() {
             let val = grid[i][j]
             let s = val.toString()
             if (newNumMark[i][j] === 1){
-                strokeWeight(8)
+                strokeWeight(6)
                 stroke(200, 0, 200)
                 newNumMark[i][j] = 0
             }else{
-                strokeWeight(4)
+                strokeWeight(3)
                 stroke(0)
             }
             if (val !== 0) {
                 fill(colorsSizes[s].color)
-                rect(i * w + 4, j * w + 4, w, w, w/3)
+                //rect(i * w + 4, j * w + 4, w, w, w/3)
+                rect(i * w + 4, j * w + 4, w, w)
 
                 fill(0)
                 textAlign(CENTER, CENTER)
@@ -49,7 +50,8 @@ function drawGrid() {
                 text(val, i * w + w / 2 + 4, j * w + w / 2 + 4)
             } else {
                 noFill()
-                rect(i * w + 4, j * w + 4, w, w, w/3 + 4)
+                //rect(i * w + 4, j * w + 4, w, w, w/3 + 4)
+                rect(i * w + 4, j * w + 4, w, w)
             }
         }
     }

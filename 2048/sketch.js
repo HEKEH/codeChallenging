@@ -19,7 +19,7 @@ function setup() {
 function updateCanvas() {
     background(255)
     drawGrid()
-    select('#score').html('score: ' + score)
+    select('#score').innerHTML = 'score: ' + score
 }
 
 function keyPressed() {

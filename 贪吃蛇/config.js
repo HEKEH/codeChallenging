@@ -8,16 +8,6 @@ function reverseDir(dir) {
 }
 
 
-function randomRgbColor() { //随机生成RGB颜色
-    var r = floor(random(256)) //随机生成256以内r值
-    var g = floor(random(256)) //随机生成256以内g值
-    var b = floor(random(256)) //随机生成256以内b值
-    return `rgb(${r},${g},${b})` //返回rgb(r,g,b)格式颜色
-}
-
-let log = console.log.bind(console)
-
-
 function allCells() {
     let ret = new Array(cellNumX)
     for (var i = 0; i < cellNumX; i++) {

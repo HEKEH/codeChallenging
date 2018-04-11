@@ -45,7 +45,7 @@ function setup() {
             grid[i][j].countBees()
         }
     }
-
+    drawGrid()
 }
 
 function mousePressed(){
@@ -61,9 +61,10 @@ function mousePressed(){
     else if (mouseButton == 'right') {
         cell.mark()
     }
+    drawGrid()
 }
 
-function draw() {
+function drawGrid() {
     background(255)
     for (var i = 0; i < cols; i++) {
         for (var j = 0; j < rows; j++) {

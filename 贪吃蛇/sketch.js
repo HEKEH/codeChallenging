@@ -2,8 +2,6 @@ let w = 20
 let movePeriod = 10
 let RemainingTime
 
-//let foodPeriod = 20
-//let foodEmerge
 let foodGroup = []
 
 let snake
@@ -90,33 +88,33 @@ function draw() {
                     snake.update()
                 }
                 snake.show()
-                select('#score').html(`score: ${score}`)
-                select('#lives').html(`lives: ${lives}`)
+                select('#score').innerHTML = `score: ${score}`
+                select('#lives').innerHTML = `lives: ${lives}`
             }
             RemainingTime--
 
         } else {
-            fill('rgb(244, 13, 13)')
+            fill('rgb(255, 0, 0)')
             noStroke()
             textSize(40)
-            textAlign(CENTER,CENTER)
-            text('Game Over !', width/2,height/2)
+            textAlign(CENTER, CENTER)
+            text('Game Over !', width / 2, height / 2)
             noLoop()
         }
     }
     else {
         background(255)
-        fill('rgb(244, 13, 13)')
+        fill('rgb(255,  0, 0)')
         noStroke()
         textSize(40)
-        textAlign(CENTER,CENTER)
-        text('Press Space To Start Game!', width/2,height/2)
+        textAlign(CENTER, CENTER)
+        text('Press Space To Start Game!', width / 2, height / 2)
 
         stroke(2)
         noFill()
         rect(0, 0, cellNumX * w, cellNumY * w)
-        select('#score').html(`score: ${score}`)
-        select('#lives').html(`lives: ${lives}`)
+        select('#score').innerHTML = `score: ${score}`
+        select('#lives').innerHTML = `lives: ${lives}`
     }
 }
 

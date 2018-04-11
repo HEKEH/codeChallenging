@@ -23,16 +23,18 @@ Cell.prototype.show = function() {
             rect(this.x,this.y,this.w,this.w)
             if (this.neighborCount > 0) {
                 fill(0)
-                textSize(w/2)
-                textAlign(CENTER,CENTER)
-                text(this.neighborCount,this.x + this.w / 2 , this.y + this.w / 2)
+                textSize(w / 1.5)
+                textAlign(CENTER, CENTER)
+                noStroke()
+                text(this.neighborCount, this.x + this.w / 2 , this.y + this.w / 2)
             }
         }
     }
     else if (this.marked) {
         fill(255,0,0)
-        textSize(w/2)
-        textAlign(CENTER,CENTER)
+        textSize(w / 2)
+        textAlign(CENTER, CENTER)
+        noStroke()
         text('F',this.x + this.w / 2 , this.y + this.w / 2)
     }
 }

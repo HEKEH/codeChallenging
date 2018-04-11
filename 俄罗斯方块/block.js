@@ -1,5 +1,5 @@
 let Block = function() {
-    this.speed = random ([1, 2, 3])
+    this.speed = random ([1.5, 2, 3])
     this.type = floor(random(typeOfBlock.length))
     this.property = typeOfBlock[this.type]
     this.shape = this.property['shape']
@@ -22,7 +22,7 @@ let Block = function() {
 Block.prototype.update = function() {
     if (this.downAwait < 0){
         this.n += 1
-        this.downAwait = 3/this.speed
+        this.downAwait = 6/this.speed
     }
     this.downAwait --
 

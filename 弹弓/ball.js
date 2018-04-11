@@ -49,29 +49,31 @@ Ball.prototype.Move = function() {
         }
     } else {
         this.a.y = this.g
-        if ((this.y + this.radius == height - 1) && this.speed.y == 0 ) {//地面
-            if (abs(this.speed.x) > mu * g * dt) {
-                this.a.x = - mu * g * this.speed.x / abs(this.speed.x)
-            } else {
-                this.a.x = 0
-                this.speed.x = 0
-            }
-        }
+
 
         this.xBounceJudge(this.radius)
         this.xBounceJudge(width - 1 - this.radius)
         this.yBounceJudge(this.radius)
         let goundTouch=this.yBounceJudge(height - 1 - this.radius)
         if (goundTouch){
-            if (abs(this.speed.y) <= g * dt) {//当速度太小时，强制为0
+            if (abs(this.speed.y) <= 2 * g * dt) {//当速度太小时，强制为0
                 this.g = 0
                 this.y = height - 1 - this.radius
                 this.speed.y = 0
                 this.a.y = 0
             }
+
+            if (abs(this.speed.x) > mu * g * dt) {
+                this.a.x = - mu * g * this.speed.x / abs(this.speed.x)
+            }
+            else {
+                this.speed.x = 0
+            }
         }
     }
     this.speed.x += this.a.x * dt
+    this.a.x = 0
+
     this.speed.y += this.a.y * dt // this.a.y * dt太大(=g.dt)，abs(this.speed.y) 不能小于g.dt,不可能满足
 }
 
@@ -112,21 +114,20 @@ Ball.prototype.drag = function(x, y) {
 Ball.prototype.xBounceJudge = function(objectX) {
     //let dir = this.speed.x / abs(this.speed.x)
     let target = (this.x - objectX) / (this.speed.x * dt)
-    if (target >= 0 && target < 1) {
+    if (this.x == objectX || (target >= 0 && target < 1)) {
         this.speed.x = - this.speed.x * bounceDecay
         this. x = (1 + bounceDecay) * objectX - this. x * bounceDecay
     }
 }
 
 Ball.prototype.yBounceJudge = function(objectY) {
-    //let dir = this.speed.y / abs(this.speed.y)
     let target = (this.y - objectY) / (this.speed.y * dt)
-    log((this.y - objectY),(this.speed.y * dt))
-    if (target >= 0 && target <= 1) {
+    if (this.y == objectY || (target > 0 && target < 1)) {
         this.speed.y = - this.speed.y * bounceDecay
         this. y = (1 + bounceDecay) * objectY - this. y * bounceDecay
         return true
     }
+    return false
 }
 
 // Ball.prototype.RightBounceJudge = function(x) {

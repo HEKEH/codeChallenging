@@ -50,7 +50,7 @@ function mousePressed() {
 }
 
 function mouseReleased() {
-    if (mouseButton == 'left') {
+    if (mouseButton == 'left' && ball.dragged) {
         ball.dragged = false
         ball.released = true
     } else if (mouseButton == 'right'){

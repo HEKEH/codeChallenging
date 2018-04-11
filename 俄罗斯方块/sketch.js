@@ -35,7 +35,7 @@ function draw() {
             updateBlock()
             block.show()
             drawStack()
-            select('#score').html('score: ' + score)
+            select('#score').innerHTML = 'score: ' + score
         }
         RemainingTime--
     } else {
