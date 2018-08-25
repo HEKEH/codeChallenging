@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>地图编辑器</title>
+        <style media="screen">
+            canvas{border:dashed 1px lightskyblue}
+        </style>
+    </head>
+    <body>
+        <h3></h3>
+        <canvas id="id-canvas"
+            data-action="draw_tile"
+            width="512" height="480">
+        </canvas>
+
+        <div class="gua-inline-block">
+            <img src="img/tiles/t1.png" data-action="change_active_tile" data-id="1">
+            <img src="img/tiles/t2.png" data-action="change_active_tile" data-id="2">
+            <img src="img/tiles/t3.png" data-action="change_active_tile" data-id="3">
+            <img src="img/tiles/t4.png" data-action="change_active_tile" data-id="4">
+        </div>
+    </body>
+    <script type="text/javascript">
+        const e = sel => document.querySelector(sel)
+        const log = console.log.bind(console)
+
+        const actions = {
+            draw_tile: (event) => {
+                if (window.active_tile) {
+                    // let target = event.target
+                    // let rect = target.getBoundingClientRect()
+                    let x = event.offsetX //- rect.left
+                    let y = event.offsetY //- rect.top
+
+                    draw_tile_at(x, y)
+                }
+            },
+
+            change_active_tile: (event) => {
+                //let id = Number(event.target.dataset.id)
+                window.active_tile = event.target
+            },
+        }
+
+        const tile_position = (x, y) => {
+            let width = window.active_tile.width
+            let height = window.active_tile.height
+            let i = Math.floor(y / height)
+            let j = Math.floor(x / width)
+            return [width * j, height * i]
+        }
+
+        const draw_tile_at = (x, y) => {
+            let [x1, y1] = tile_position(x, y)
+            let tile = window.active_tile
+            let width = window.active_tile.width
+            let height = window.active_tile.height
+            window.context.fillRect(x1, y1, width, height)
+            window.context.drawImage(tile, x1, y1)
+
+            //FIXME , 暂时这样处理
+            let tile_id = Number(window.active_tile.dataset.id)
+            window.map.setTile(x1 / width, y1 / height, tile_id)
+        }
+
+        const bindEvents = () => {
+            e('body').addEventListener('click', event => {
+                let action = event.target.dataset.action
+                actions[action] && actions[action](event)
+            })
+            let moving = false
+            window.canvas.addEventListener('mousedown', event => {
+                moving = true
+            })
+
+            window.canvas.addEventListener('mousemove', event => {
+                if (moving) {
+                    let x = event.offsetX
+                    let y = event.offsetY
+                    draw_tile_at(x, y)
+                }
+            })
+
+            window.canvas.addEventListener('mouseup', event => {
+                moving = false
+            })
+        }
+
+        const init = () => {
+            window.map = new Map()
+            window.canvas = e('#id-canvas')
+            window.context = window.canvas.getContext('2d')
+            window.context.fillStyle = '#5080FF'
+            window.context.fillRect(0, 0, window.canvas.width, window.canvas.height)
+
+            window.active_tile = null
+        }
+
+        class Map {
+            constructor() {
+                this.height = 15
+                this.width = 20
+                this.tiles = []
+                this.setupTiles()
+            }
+            setupTiles() {
+                let s = this.height * this.width
+                for (var i = 0; i < s; i++) {
+                    this.tiles[i] = 0
+                }
+            }
+            setTile(i, j, tile_id) {
+                let index = i * this.height + j
+                this.tiles[index] = tile_id
+            }
+            exportJSON() {
+                let s = JSON.stringify(this.tiles)
+                log(s)
+            }
+        }
+
+        const __main = () => {
+            init()
+            bindEvents()//把按钮和事件绑定起来
+        }
+        __main()
+    </script>
+</html>
